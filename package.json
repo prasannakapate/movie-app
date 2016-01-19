@@ -1,0 +1,24 @@
+{
+  "name": "movie-app",
+  "version": "1.0.0",
+  "description": "Angularjs unit testing in depth with ngMocks ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prasannakapate/movie-app.git"
+  },
+  "keywords": [
+    "Angularjs",
+    "unit",
+    "testing"
+  ],
+  "author": "Prasanna Kapate",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/prasannakapate/movie-app/issues"
+  },
+  "homepage": "https://github.com/prasannakapate/movie-app#readme"
+}

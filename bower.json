@@ -1,0 +1,23 @@
+{
+  "name": "movie-app",
+  "description": "Angularjs unit testing in depth with ngMocks",
+  "main": "index.js",
+  "authors": [
+    "Prasanna Kapate"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "Angularjs",
+    "unit",
+    "testing"
+  ],
+  "homepage": "https://github.com/prasannakapate/movie-app",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
