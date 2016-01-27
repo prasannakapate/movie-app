@@ -60,7 +60,9 @@ describe('omdb service', function() {
             "imdbID": "tt0361243",
             "Type": "series",
             "Poster": "http://ia.media-imdb.com/images/M/MV5BMjE2Mjk5Mzk3M15BMl5BanBnXkFtZTcwMDkzMTIzMQ@@._V1_SX300.jpg"
-        }]
+        }],
+        "totalResults": "294",
+        "Response": "True"
     };
 
     var movieDataById = {
@@ -73,34 +75,82 @@ describe('omdb service', function() {
         "Director": "George Lucas",
         "Writer": "George Lucas",
         "Actors": "Mark Hamill, Harrison Ford, Carrie Fisher, Peter Cushing",
-        "Plot": "Luke Skywalker joins forces with a Jedi Knight, a cocky pilot, a wookiee and two droids to save the universe from the Empire's world-destroying battle-station, while also attempting to rescue Princess Leia from the evil Darth Vader.",
+        "Plot": "Luke Skywalker joins forces with a Jedi Knight, a cocky pilot, a wookiee and two droids to save the galaxy from the Empire's world-destroying battle-station, while also attempting to rescue Princess Leia from the evil Darth Vader.",
         "Language": "English",
         "Country": "USA",
         "Awards": "Won 6 Oscars. Another 38 wins & 27 nominations.",
         "Poster": "http://ia.media-imdb.com/images/M/MV5BMTU4NTczODkwM15BMl5BanBnXkFtZTcwMzEyMTIyMw@@._V1_SX300.jpg",
         "Metascore": "92",
         "imdbRating": "8.7",
-        "imdbVotes": "822,849",
+        "imdbVotes": "852,420",
         "imdbID": "tt0076759",
         "Type": "movie",
         "Response": "True"
     };
 
     var omdbApi = {};
+    var $httpBackend;
 
     beforeEach(module('omdb'));
-    beforeEach(inject(function(_omdbApi_) {
+    beforeEach(inject(function(_omdbApi_, _$httpBackend_) {
         omdbApi = _omdbApi_;
+        $httpBackend = _$httpBackend_;
     }));
 
     it('should return search movie data', function() {
         //console.log(angular.mock.dump(movieData));
         //dump(angular.mock.dump(movieData));
         //dump is a karma function which is short hand for console.log()
-        expect(omdbApi.search('star wars')).toEqual(movieData);
+        var response;
+        //var expectedUrl = 'http://www.omdbapi.com/?v=1&s=star%20wars';
+        /*  var expectedUrl = function(url) {
+            return url.indexOf('http://www.omdbapi.com') !== -1;
+        };*/
+
+        var expectedUrl = 'http://www.omdbapi.com/?v=1&s=star%20wars';
+
+        $httpBackend.when('GET', expectedUrl)
+            .respond(200, movieData);
+
+        omdbApi.search('star wars')
+            .then(function(data) {
+                response = data;
+            });
+        $httpBackend.flush();
+        expect(response).toEqual(movieData);
+    });
+
+    it('should handle error', function() {
+         var response;
+        var expectedUrl = 'http://www.omdbapi.com/?v=1&i=tt0076759';
+
+        $httpBackend.when('GET', expectedUrl)
+            .respond(500);
+
+        omdbApi.find('tt0076759')
+            .then(function(data) {
+                response = data;
+            })
+            .catch(function(){
+                response = 'Error!';
+            });
+        $httpBackend.flush();
+        expect(response).toEqual('Error!');
+
     });
 
     it('should return movie data by id', function() {
-        expect(omdbApi.find('tt0076759')).toEqual(movieDataById);
+        var response;
+        var expectedUrl = 'http://www.omdbapi.com/?v=1&i=tt0076759';
+
+        $httpBackend.when('GET', expectedUrl)
+            .respond(200, movieDataById);
+
+        omdbApi.find('tt0076759')
+            .then(function(data) {
+                response = data;
+            });
+        $httpBackend.flush();
+        expect(response).toEqual(movieDataById);
     });
 });
