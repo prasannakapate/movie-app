@@ -6,6 +6,6 @@ angular.module('movieApp')
 				$scope.results = data.Search;
 			})
 			.catch(function() {
-				$scope.errorMessage = 'Something went wrong!'
+				$scope.errorMessage = 'Something went wrong!';
 			});
 	});
